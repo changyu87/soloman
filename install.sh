@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# Install the-paradigm as a self-contained Claude Code skill bundle.
+# Install soloman as a self-contained Claude Code skill bundle.
 #
 # Usage:
-#   ./install.sh                              # install to ~/.claude/skills/the-paradigm
-#   PARADIGM_INSTALL_DIR=/path ./install.sh   # install to a custom location
+#   ./install.sh                              # install to ~/.claude/skills/soloman
+#   SOLOMAN_INSTALL_DIR=/path ./install.sh   # install to a custom location
 
 set -euo pipefail
 
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEST="${PARADIGM_INSTALL_DIR:-$HOME/.claude/skills/the-paradigm}"
-VERSION="0.5.1"
+DEST="${SOLOMAN_INSTALL_DIR:-$HOME/.claude/skills/soloman}"
+VERSION="0.1.0"
 
 # Attempt to install the writing-plans skill from its official GitHub source.
 # Requires git and network. Silent failure — never errors out or changes exit code.
@@ -38,12 +38,12 @@ install_writing_plans() {
 # Ensure parent dir exists.
 mkdir -p "$(dirname "$DEST")"
 
-# If DEST exists, verify it's a paradigm install before replacing.
+# If DEST exists, verify it's a soloman install before replacing.
 if [ -e "$DEST" ]; then
-  if [ -f "$DEST/SKILL.md" ] && grep -q "^name: the-paradigm" "$DEST/SKILL.md"; then
+  if [ -f "$DEST/SKILL.md" ] && grep -q "^name: soloman" "$DEST/SKILL.md"; then
     rm -rf "$DEST"
   else
-    echo "ERROR: $DEST exists and is not a paradigm install. Refusing to overwrite." >&2
+    echo "ERROR: $DEST exists and is not a soloman install. Refusing to overwrite." >&2
     exit 1
   fi
 fi
@@ -64,5 +64,5 @@ echo "$VERSION" > "$DEST/VERSION"
 # Install optional writing-plans skill (silent failure).
 install_writing_plans || true
 
-echo "Installed the-paradigm v$VERSION to $DEST"
-echo "Invoke with /the-paradigm in Claude Code."
+echo "Installed soloman v$VERSION to $DEST"
+echo "Invoke with /soloman in Claude Code."

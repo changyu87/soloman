@@ -1,4 +1,15 @@
-# The Paradigm — Changelog
+# Soloman — Changelog
+
+## v0.1.0 — Project renamed from the-paradigm to soloman (2026-04-24)
+
+### Changed
+- Project renamed from "the-paradigm" to "soloman"
+- Updated all references in installation scripts, skill definition, and documentation
+- Changed installation path from `~/.claude/skills/the-paradigm/` to `~/.claude/skills/soloman/`
+- Updated environment variable from `PARADIGM_INSTALL_DIR` to `SOLOMAN_INSTALL_DIR`
+- Changed self-mode detection from `PARADIGM.md` to `SOLOMAN.md`
+- Updated state directory from `.paradigm/` to `.soloman/`
+- Updated version number to 0.1.0
 
 ## v0.5.1 — Token-efficiency trim (2026-04-19)
 

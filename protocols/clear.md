@@ -17,9 +17,9 @@ selection (a design choice, not approval).
 
 | Tier | Triggers | Removes | Preserves |
 |---|---|---|---|
-| default | `/the-paradigm clear`, NL phrases like "clear paradigm state" / "清空状态" | `$STATE_ROOT/state/*` (current.md, session-log.md, resume.md, checkpoints/) | config.yaml, workstreams/, knowledge/, roles/ |
-| --active | `/the-paradigm clear --active`; NL triggers route through Stage 1 to choose | above + `$STATE_ROOT/workstreams/active/*` | config.yaml, workstreams/completed/, knowledge/, roles/ |
-| --all | `/the-paradigm clear --all`; NL triggers route through Stage 1 to choose | entire `$STATE_ROOT` (the `.paradigm/` directory) | nothing — project will need re-initialization next session |
+| default | `/soloman clear`, NL phrases like "clear soloman state" / "清空状态" | `$STATE_ROOT/state/*` (current.md, session-log.md, resume.md, checkpoints/) | config.yaml, workstreams/, knowledge/, roles/ |
+| --active | `/soloman clear --active`; NL triggers route through Stage 1 to choose | above + `$STATE_ROOT/workstreams/active/*` | config.yaml, workstreams/completed/, knowledge/, roles/ |
+| --all | `/soloman clear --all`; NL triggers route through Stage 1 to choose | entire `$STATE_ROOT` (the `.soloman/` directory) | nothing — project will need re-initialization next session |
 
 Note: NL triggers never carry a tier; they always route through Stage 1 tier
 selection. Only slash-style invocations with explicit `--active`/`--all`
@@ -42,7 +42,7 @@ ordinary conversation.
   "重置 paradigm", "清空 session 状态", "清理当前 session",
   "结束 paradigm 工作流".
 
-Slash-style also qualifies: first message is `/the-paradigm clear` (no args)
+Slash-style also qualifies: first message is `/soloman clear` (no args)
 OR a `clear` message of ≤3 tokens optionally followed by
 `--active` / `--all` / `state` / `paradigm`.
 
@@ -81,7 +81,7 @@ The user picks. **This is a design choice, NOT destructive approval.**
    Bash tool.
 5. Interfacer reports what was removed. For `default` and `--active`,
    confirm the project is still initialized. For `--all`, instruct the
-   user to re-invoke `/the-paradigm` next session for re-initialization.
+   user to re-invoke `/soloman` next session for re-initialization.
 
 ## Invariants
 

@@ -71,7 +71,7 @@ State saved. Here's where we are:
 - Completed: {what's done}
 - Next step: {what should happen when you resume}
 
-To continue: start a new Claude Code session and type /the-paradigm
+To continue: start a new Claude Code session and type /soloman
 The new session will automatically detect the saved state and offer to resume.
 ```
 

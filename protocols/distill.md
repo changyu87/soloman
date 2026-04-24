@@ -15,7 +15,7 @@ anchor word is required.
 
 ## Trigger phrase bank
 
-- **Slash**: `/the-paradigm distill`
+- **Slash**: `/soloman distill`
 - **EN**: "distill", "run distill", "run a distill pass",
   "audit token efficiency", "token-efficiency audit",
   "run a token audit"

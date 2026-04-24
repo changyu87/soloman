@@ -109,7 +109,7 @@ Trigger: {workstream-complete | context-overflow | user-request}
 
 ## Recovery Protocol
 
-When a new session starts and `/the-paradigm` is invoked, read state on
+When a new session starts and `/soloman` is invoked, read state on
 the fast path (bounded token cost); defer the unbounded session-log until
 the user asks for detail:
 

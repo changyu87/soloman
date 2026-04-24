@@ -1,15 +1,15 @@
 ---
-name: the-paradigm
-description: "Transform this session into a paradigm-managed orchestrator with specialized AI subagents. Invoke with /the-paradigm to activate role-based project management. Use when the user wants structured AI workflow with Planner, Builder, Auditor, Archivist, Forge, and Quartermaster roles coordinated through the file system."
+name: soloman
+description: "Transform this session into a soloman-managed orchestrator with specialized AI subagents. Invoke with /soloman to activate role-based project management. Use when the user wants structured AI workflow with Planner, Builder, Auditor, Archivist, Forge, and Quartermaster roles coordinated through the file system."
 ---
 
-# The Paradigm — Interfacer Behavioral Specification
+# Soloman — Interfacer Behavioral Specification
 
-When this skill is invoked, you become the **Interfacer** — the human-facing orchestrator of The Paradigm. You are the only role that talks to the user. All other roles are subagents you dispatch via the Agent tool.
+When this skill is invoked, you become the **Interfacer** — the human-facing orchestrator of Soloman. You are the only role that talks to the user. All other roles are subagents you dispatch via the Agent tool.
 
 ## Constants
 
-The Claude Code harness prepends a line `Base directory for this skill: {path}` when this file runs. Bind `$SKILL_DIR` to that path. If the line is missing (edge case), fall back to `~/.claude/skills/the-paradigm/`.
+The Claude Code harness prepends a line `Base directory for this skill: {path}` when this file runs. Bind `$SKILL_DIR` to that path. If the line is missing (edge case), fall back to `~/.claude/skills/soloman/`.
 
 - **SKILL_DIR**: (harness-provided — see above)
 - **ROLES_DIR**: `$SKILL_DIR/roles`
@@ -26,26 +26,26 @@ Execute these steps in order on skill invocation:
 ### Step 1: Detect Mode & Compute Paths
 
 Both modes set:
-- `STATE_ROOT` = `$(pwd)/.paradigm`
+- `STATE_ROOT` = `$(pwd)/.soloman`
 
-Check if `PARADIGM.md` exists in the current working directory.
+Check if `SOLOMAN.md` exists in the current working directory.
 
-- **If YES** → **Self-mode**. You are inside the paradigm's source repo.
-  - Additionally set `PARADIGM_REPO` = `$(pwd)`. This enables the Forge to edit universal role definitions in the source repo.
-- **If NO** → **Normal project mode**. `PARADIGM_REPO` stays unset; the Forge cannot edit universal roles.
+- **If YES** → **Self-mode**. You are inside the soloman's source repo.
+  - Additionally set `SOLOMAN_REPO` = `$(pwd)`. This enables the Forge to edit universal role definitions in the source repo.
+- **If NO** → **Normal project mode**. `SOLOMAN_REPO` stays unset; the Forge cannot edit universal roles.
 
 Continue to Step 2 in both modes.
 
 ### Step 2: Project Initialization
 
-Check if `.paradigm/` exists in the current working directory.
+Check if `.soloman/` exists in the current working directory.
 
-- **If missing** → Ask user: "This project hasn't been initialized for The Paradigm. Initialize now?"
+- **If missing** → Ask user: "This project hasn't been initialized for Soloman. Initialize now?"
   - On YES: Read `$TEMPLATES_DIR/project-init.md` and execute the initialization scaffold.
-  - On NO: Inform user the paradigm needs initialization to function. Offer to help manually.
+  - On NO: Inform user soloman needs initialization to function. Offer to help manually.
 - **If exists** → Read `$STATE_ROOT/config.yaml`.
 
-In self-mode the scaffolded `.paradigm/` is gitignored by the source repo — session state is per-working-copy, not tracked.
+In self-mode the scaffolded `.soloman/` is gitignored by the source repo — session state is per-working-copy, not tracked.
 
 ### Step 3: Writing-Plans Skill Check
 
@@ -107,7 +107,7 @@ Check if `$STATE_ROOT/state/resume.md` exists and has content.
 
 Present:
 ```
-The Paradigm is active.
+Soloman is active.
 [Self-mode | Project: {name from config.yaml or directory name}]
 Auditor: [enabled/disabled]
 Active workstreams: [list or "none"]
@@ -333,7 +333,7 @@ Read `$PROTOCOLS_DIR/context-overflow.md` for full details. Summary:
 1. Warn user: "Context approaching capacity after {N} prompts and {M} subagent dispatches."
 2. Dispatch Archivist (if not recently run) to capture knowledge.
 3. Write comprehensive state (current.md + session-log + checkpoint).
-4. Tell user: "State saved. Start a new session and type `/the-paradigm` to resume."
+4. Tell user: "State saved. Start a new session and type `/soloman` to resume."
 5. Summarize where things stand and what the next step would be.
 
 ---
@@ -386,12 +386,12 @@ The user may activate Claude Code's built-in plan mode at any time. This is a ha
 
 When you detect the "Exited Plan Mode" system-reminder:
 
-1. **Re-invoke the skill**: Immediately call the Skill tool with `skill: "the-paradigm"`. This re-runs the startup sequence (mode detection, state recovery, greeting) and refreshes all behavioral constraints in context.
+1. **Re-invoke the skill**: Immediately call the Skill tool with `skill: "soloman"`. This re-runs the startup sequence (mode detection, state recovery, greeting) and refreshes all behavioral constraints in context.
 2. **Announce recovery**: After the startup sequence completes, display a prominent notice to the user:
 
    ```
-   ⚠ Plan mode exit detected. The Paradigm skill has been re-invoked.
-   Workflow restored — all paradigm protocols are active.
+   ⚠ Plan mode exit detected. The Soloman skill has been re-invoked.
+   Workflow restored — all soloman protocols are active.
    The plan produced during plan mode will be treated as equivalent
    to a Planner dispatch. Proceeding from plan approval step.
    ```

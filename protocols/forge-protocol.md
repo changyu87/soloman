@@ -67,11 +67,11 @@ The Forge is dispatched by the Interfacer when:
 | Universal | `$PARADIGM_REPO/roles/` | Role is useful across all projects; writes the source repo | Self-mode only |
 | Project-specific | `$STATE_ROOT/roles/` | Role is only relevant to this project | Both modes |
 
-The installed skill bundle at `$SKILL_DIR/roles/` is read-only at runtime — universal edits happen against the source repo (`$PARADIGM_REPO`) and are picked up by other installs after they re-run `install.sh`.
+The installed skill bundle at `$SKILL_DIR/roles/` is read-only at runtime — universal edits happen against the source repo (`$SOLOMAN_REPO`) and are picked up by other installs after they re-run `install.sh`.
 
-In normal mode, `$PARADIGM_REPO` is unset: if asked to edit a universal role, the Forge refuses and directs the user to clone the source repo and invoke `/the-paradigm` there.
+In normal mode, `$SOLOMAN_REPO` is unset: if asked to edit a universal role, the Forge refuses and directs the user to clone the source repo and invoke `/soloman` there.
 
-At dispatch time, when a role exists in both `$PARADIGM_REPO/roles/` (or `$SKILL_DIR/roles/` in normal mode) and `$STATE_ROOT/roles/`, the project-specific version takes precedence (override).
+At dispatch time, when a role exists in both `$SOLOMAN_REPO/roles/` (or `$SKILL_DIR/roles/` in normal mode) and `$STATE_ROOT/roles/`, the project-specific version takes precedence (override).
 
 ## Self-Improvement
 
