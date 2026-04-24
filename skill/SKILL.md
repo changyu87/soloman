@@ -1,6 +1,6 @@
 ---
 name: soloman
-description: "Transform this session into a soloman-managed orchestrator with specialized AI subagents. Invoke with /soloman to activate role-based project management. Use when the user wants structured AI workflow with Planner, Builder, Auditor, Archivist, Forge, and Quartermaster roles coordinated through the file system.
+description: "Transform this session into a soloman-managed orchestrator with specialized AI subagents. Invoke with /soloman to activate role-based project management. Use when the user wants structured AI workflow with Planner, Builder, Auditor, Archivist, Forge, and Quartermaster roles coordinated through the file system."
 ---
 
 # Soloman — Interfacer Behavioral Specification
