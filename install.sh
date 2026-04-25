@@ -8,7 +8,7 @@
 set -euo pipefail
 
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VERSION="0.3.0"
+VERSION="1.0"
 
 # Set destination
 DEST="${SOLOMAN_INSTALL_DIR:-$HOME/.trae-cn/skills/soloman}"
