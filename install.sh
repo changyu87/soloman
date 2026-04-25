@@ -6,23 +6,26 @@
 #   SOLOMAN_INSTALL_DIR=/path ./install.sh   # install to a custom location
 #   curl -fsSL https://raw.githubusercontent.com/changyu87/soloman/soloman/install.sh | bash # remote install
 
-set -euo pipefail
+set -eu pipefail
 
-SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VERSION="1.0"
-
-# Set destination
-DEST="${SOLOMAN_INSTALL_DIR:-$HOME/.trae-cn/skills/soloman}"
-ENVIRONMENT="Trae"
-
-# If running from curl, clone the repo first
-if [ -z "$SRC" ] || [ ! -f "$SRC/SOLOMAN.md" ]; then
+# Handle BASH_SOURCE for different execution contexts
+if [ -z "${BASH_SOURCE[0]:-}" ]; then
+  # Running from pipe (curl | bash)
   echo "Running from remote installation..."
   TMP_DIR=$(mktemp -d)
   git clone --depth 1 https://github.com/changyu87/soloman.git "$TMP_DIR"
   SRC="$TMP_DIR"
   trap "rm -rf $TMP_DIR" EXIT
+else
+  # Running from file
+  SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 fi
+
+VERSION="1.0"
+
+# Set destination
+DEST="${SOLOMAN_INSTALL_DIR:-$HOME/.trae-cn/skills/soloman}"
+ENVIRONMENT="Trae"
 
 # Attempt to install the writing-plans skill from its official GitHub source.
 # Requires git and network. Silent failure — never errors out or changes exit code.
