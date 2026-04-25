@@ -1,18 +1,18 @@
-# Invariants — The Paradigm
+# 不变规则 — Paradigm
 
-> Hard rules that must never be violated. Updated by Archivist at milestones.
+> 绝不可违反的硬性规则。由档案员在里程碑节点更新。
 
-1. Only the Interfacer talks to the user.
-2. Only the Interfacer dispatches subagents. Subagents never launch other subagents.
-3. Only the Forge modifies role definitions.
-4. The Forge can edit itself but cannot delete itself.
-5. Role deletion requires user or Planner approval.
-6. State is saved after every user interaction cycle.
-7. After any Forge operation, the Interfacer reloads affected role definitions from disk.
-8. In self-mode, the Forge may additionally write to `$PARADIGM_REPO/roles/` (the source repo's universal role files). In normal mode, `$SKILL_DIR/roles/` is read-only.
-9. The Auditor's enabled/disabled status is always communicated to the user.
-10. When context overflow is detected, save state and advise session refresh.
-11. The installed skill bundle at `$SKILL_DIR` is read-only at runtime. No role writes under `$SKILL_DIR`.
-12. Every Interfacer response to a user message begins with a `[Route]` line. Omitting it is a protocol violation.
-13. The approval gate between plan-review (Core Loop §5 item 4) and Builder/Forge dispatch (item 5) requires an explicit free-text approval from the user per `protocols/workflow.md` §5. AskUserQuestion selections, user silence, or clarifying-question answers are NEVER valid approval.
-14. Destructive state operations (the `clear` command in any tier) require an explicit free-text confirmation matching the exact confirmation token (`YES, CLEAR <tier>`) printed by the operation's dry-run. AskUserQuestion MAY be used in Stage 1 to let the user select a tier before the manifest is shown; it is NEVER valid as the Stage 2 destructive confirmation. User silence or clarifying-question answers are likewise never valid confirmation. No backup is taken; the confirmation gate is the only safeguard.
+1. 只有总控与用户对话。
+2. 只有总控调度子代理。子代理不得启动其他子代理。
+3. 只有 铁匠 修改角色定义。
+4. 铁匠 可以编辑自己，但不能删除自己。
+5. 删除角色需要用户或规划器批准。
+6. 每次用户交互循环后保存状态。
+7. 在 铁匠 执行任何操作后，总控从磁盘重新加载受影响的角色定义。
+8. 在自模式下，铁匠 还可以写入 `$PARADIGM_REPO/roles/`（源码仓库的通用角色文件）。在普通模式下，`$SKILL_DIR/roles/` 是只读的。
+9. 审计器的启用/禁用状态始终告知用户。
+10. 检测到上下文溢出时，保存状态并建议刷新会话。
+11. `$SKILL_DIR` 处已安装的技能包在运行时是只读的。任何角色不得写入 `$SKILL_DIR`。
+12. 总控对用户消息的每条回复都以 `[Route]` 行开头（例如 `[Route] 语言=en | 类别=元命令 | 关卡=直接`）。省略它属于协议违规。
+13. 计划审查（核心循环 §5 第 4 项）与构建器/铁匠调度（第 5 项）之间的审批门禁需要用户根据 `protocols/workflow.md` §5 提供明确的自由文本批准。AskUserQuestion 选择、用户沉默或澄清性问题的回答永远不是有效批准。
+14. 破坏性状态操作（任何层级的 `clear` 命令）需要明确的自由文本确认，确认令牌必须与操作干运行打印的确切确认令牌（`YES, CLEAR <层级>`）完全匹配。AskUserQuestion 可用于阶段 1，让用户在显示清单之前选择层级；它永远不能作为阶段 2 的破坏性确认。用户沉默或澄清性问题的回答同样永远不是有效确认。不进行备份；审批门禁是唯一的保障。

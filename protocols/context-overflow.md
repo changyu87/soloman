@@ -1,67 +1,67 @@
-# Protocol: Context Overflow
+# Protocol: 上下文溢出
 
-This document defines how the Interfacer detects and handles approaching context window limits.
+本文档定义了总控如何检测和处理接近上下文窗口限制的情况。
 
-## The Problem
+## 问题
 
-The Interfacer (main session) accumulates context with every:
-- User message
-- Subagent dispatch + return message
-- File read
-- Internal reasoning
+总控（主会话）在每次以下操作时都会累积上下文：
+- 用户消息
+- 子代理调度 + 返回消息
+- 文件读取
+- 内部推理
 
-Eventually the context window fills up and quality degrades. The paradigm must handle this gracefully.
+最终上下文窗口会被填满，质量下降。范式必须优雅地处理这种情况。
 
-## Detection
+## 检测
 
-The Interfacer tracks two metrics in `state/current.md`:
+总控在 `state/current.md` 中跟踪两个指标：
 
-| Metric | Default Threshold | Configurable In |
+| 指标 | 默认阈值 | 可配置位置 |
 |---|---|---|
-| Session prompt count | 15 | `config.yaml → settings.context_warn_prompts` |
-| Subagent dispatch count | 10 | `config.yaml → settings.context_warn_agents` |
+| 会话提示次数 | 15 | `config.yaml → settings.context_warn_prompts` |
+| 子代理调度次数 | 10 | `config.yaml → settings.context_warn_agents` |
 
-When EITHER threshold is exceeded, enter the Graceful Handoff protocol.
+当**任一**阈值被超过时，进入优雅交接协议。
 
-### Heuristic Rationale
+### 启发式原理
 
-- Each user prompt adds ~500-2000 tokens (user message + Interfacer response)
-- Each subagent dispatch adds ~500-1500 tokens (dispatch + return message)
-- At 15 prompts + 10 dispatches, roughly 20-40K tokens consumed
-- Claude Code sessions typically support 100-200K context, but quality degrades well before the hard limit
-- Conservative thresholds ensure handoff before quality loss
+- 每次用户提示增加约 500-2000 token（用户消息 + 总控响应）
+- 每次子代理调度增加约 500-1500 token（调度 + 返回消息）
+- 在 15 次提示 + 10 次调度时，大约消耗 20-40K token
+- Claude Code 会话通常支持 100-200K 上下文，但质量在达到硬限制之前就会下降
+- 保守的阈值确保在质量下降之前进行交接
 
-## Graceful Handoff Protocol
+## 优雅交接协议
 
-When a threshold is exceeded:
+当阈值被超过时：
 
-### Step 1: Warn the User
+### 步骤 1：警告用户
 
 ```
 Context is approaching capacity after {N} prompts and {M} subagent dispatches.
 I'll prepare for a session handoff now.
 ```
 
-### Step 2: Dispatch Archivist (if not recently run)
+### 步骤 2：调度档案员（如果最近未运行）
 
-Dispatch Archivist to:
-- Update `knowledge/index.md`
-- Write a checkpoint to `state/checkpoints/`
-- Capture any new invariants or conventions
+调度档案员执行以下操作：
+- 更新 `knowledge/index.md`
+- 将检查点写入 `state/checkpoints/`
+- 捕获任何新的不变式或约定
 
-Skip if Archivist ran within the last 3 interactions.
+如果档案员在过去 3 次交互内已运行，则跳过。
 
-### Step 3: Write Comprehensive State
+### 步骤 3：写入完整状态
 
-Update `state/current.md` with full detail:
-- Current workstream and exact phase
-- What was just completed
-- What should happen next
-- Any pending decisions or open questions
+用完整细节更新 `state/current.md`：
+- 当前工作流及确切阶段
+- 刚刚完成的内容
+- 下一步应该做什么
+- 任何待定决策或未解决的问题
 
-Ensure `state/session-log.md` is up to date.
+确保 `state/session-log.md` 是最新的。
 
-### Step 4: Advise the User
+### 步骤 4：建议用户
 
 ```
 State saved. Here's where we are:
@@ -75,34 +75,34 @@ To continue: start a new Claude Code session and type /soloman
 The new session will automatically detect the saved state and offer to resume.
 ```
 
-### Step 5: Stop Initiating New Work
+### 步骤 5：停止发起新工作
 
-After the handoff advisory, the Interfacer should:
-- Still respond to user questions about current state
-- NOT dispatch new subagents
-- NOT start new workstreams
-- Encourage the user to start a fresh session
+在交接建议之后，总控应：
+- 仍然回答用户关于当前状态的问题
+- **不**调度新的子代理
+- **不**启动新的工作流
+- 鼓励用户启动新会话
 
-## Early Warning
+## 提前预警
 
-At 80% of threshold (e.g., 12 prompts when threshold is 15):
+在达到阈值的 80% 时（例如，阈值为 15 时达到 12 次提示）：
 
 ```
 Note: We're at {N}/{threshold} prompts. Consider wrapping up the current task
 before starting something new, or we'll need a session refresh soon.
 ```
 
-This gives the user a chance to finish the current workstream cleanly.
+这给用户一个机会干净地完成当前工作流。
 
-## Tuning Thresholds
+## 调整阈值
 
-Users can adjust thresholds in `config.yaml`:
+用户可以在 `config.yaml` 中调整阈值：
 
 ```yaml
 settings:
-  context_warn_prompts: 15  # Increase for simpler conversations
-  context_warn_agents: 10   # Increase if subagent returns are small
+  context_warn_prompts: 15  # 对于简单对话可增大
+  context_warn_agents: 10   # 如果子代理返回内容较小可增大
 ```
 
-Lower thresholds = more frequent handoffs but consistently high quality.
-Higher thresholds = fewer handoffs but risk of quality degradation.
+较低的阈值 = 更频繁的交接，但持续保持高质量。
+较高的阈值 = 更少的交接，但存在质量下降的风险。

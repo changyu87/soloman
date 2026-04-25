@@ -1,43 +1,42 @@
-# Project File Index — The Paradigm
+# 项目文件索引 — Paradigm
 
-> Maintained by the Archivist. Last updated: 2026-04-18
+> 由档案员维护。最后更新：2026-04-18
 
-## Core
-- `PARADIGM.md` — Human docs, quick start guide, self-mode marker
-- `CLAUDE.md` — Auto-loaded dev context for Claude Code sessions
-- `changelog.md` — Version history and evolution log
-- `install.sh` / `uninstall.sh` — Build and remove the installed skill bundle
+## 核心
+- `SOLOMAN.md` — 人类文档、快速入门指南、自模式标记
+- `changelog.md` — 版本历史和演进日志
+- `install.sh` / `uninstall.sh` — 构建和移除已安装的技能包
 
-## Skill
-- `skill/SKILL.md` — Claude Code skill definition + Interfacer behavioral spec
+## 技能
+- `skill/SKILL.md` — Claude Code 技能定义 + 总控行为规范
 
-## Roles (7 built-in + template)
-- `roles/_template.md` — Blueprint for creating new roles (used by Forge)
-- `roles/interfacer.md` — Reference doc for Interfacer (NOT a subagent prompt)
-- `roles/planner.md` — Subagent: produces execution plans
-- `roles/builder.md` — Subagent: executes plans, writes code/content
-- `roles/auditor.md` — Subagent: independent review (optional)
-- `roles/archivist.md` — Subagent: project knowledge curator
-- `roles/forge.md` — Subagent: creates/edits/deletes roles (CORE, cannot be deleted)
-- `roles/quartermaster.md` — Subagent: AI/hardware resource management
+## 角色（7 个内置 + 模板）
+- `roles/_template.md` — 创建新角色的蓝图（由 铁匠 使用）
+- `roles/interfacer.md` — 总控的参考文档（非子代理提示词）
+- `roles/planner.md` — 子代理：生成执行计划
+- `roles/builder.md` — 子代理：执行计划，编写代码/内容
+- `roles/auditor.md` — 子代理：独立审查（可选）
+- `roles/archivist.md` — 子代理：项目知识管理员
+- `roles/forge.md` — 子代理：创建/编辑/删除角色（核心，不可删除）
+- `roles/quartermaster.md` — 子代理：AI/硬件资源管理
 
-## Protocols
-- `protocols/workflow.md` — Standard flow: enrichment → plan → audit → build → audit → complete. §5 is the canonical spec for the plan-approval gate (what "present" and "approval" mean; AskUserQuestion selections are NEVER approval).
-- `protocols/state-management.md` — Lightweight (every prompt) + heavyweight (milestones) state
-- `protocols/context-overflow.md` — Detection heuristics and graceful handoff protocol
-- `protocols/forge-protocol.md` — Rules for role creation, editing, deletion
-- `protocols/language.md` — Multilingual-interaction / English-artifact policy
+## 协议
+- `protocols/workflow.md` — 标准流程：丰富 → 规划 → 审计 → 构建 → 审计 → 完成。§5 是计划审批门禁的规范定义（"展示"和"批准"的含义；AskUserQuestion 选择永远不是批准）。
+- `protocols/state-management.md` — 轻量级（每次提示词）+ 重量级（里程碑）状态
+- `protocols/context-overflow.md` — 检测启发式和优雅交接协议
+- `protocols/forge-protocol.md` — 角色创建、编辑、删除的规则
+- `protocols/language.md` — 多语言交互/中文工件策略
 
-## Templates
-- `templates/project-init.md` — `.paradigm/` scaffold for new projects
-- `templates/workstream-init.md` — Workstream creation procedure
+## 模板
+- `templates/project-init.md` — 新项目的 `.paradigm/` 脚手架
+- `templates/workstream-init.md` — 工作流创建流程
 
-## Knowledge (shipped reference material)
-- `knowledge/index.md` — This file
-- `knowledge/invariants.md` — Hard rules (items 1–13; item 12 = Route preamble, item 13 = explicit-approval gate)
-- `knowledge/conventions.md` — Style and naming conventions
+## 知识（随附的参考资料）
+- `knowledge/index.md` — 本文件
+- `knowledge/invariants.md` — 硬性规则（条目 1–13；条目 12 = Route 前缀，条目 13 = 明确批准门禁）
+- `knowledge/conventions.md` — 风格和命名约定
 
-## Key Cross-References
-- Plan-approval gate: `protocols/workflow.md` §5 (spec) ↔ `skill/SKILL.md` Core Loop §5 item 4 + Invariant 13 ↔ `knowledge/invariants.md` item 13
-- Route preamble: `skill/SKILL.md` Invariant 12 ↔ `knowledge/invariants.md` item 12
-- Installed bundle layout: `install.sh` copies `skill/SKILL.md` → `$SKILL_DIR/SKILL.md` (bundle root, NOT under `skill/`)
+## 关键交叉引用
+- 计划审批门禁：`protocols/workflow.md` §5（规范）↔ `skill/SKILL.md` 核心循环 §5 第 4 项 + 不变规则 13 ↔ `knowledge/invariants.md` 第 13 项
+- Route 前缀：`skill/SKILL.md` 不变规则 12 ↔ `knowledge/invariants.md` 第 12 项
+- 已安装包布局：`install.sh` 复制 `skill/SKILL.md` → `$SKILL_DIR/SKILL.md`（包根目录，不在 `skill/` 下）

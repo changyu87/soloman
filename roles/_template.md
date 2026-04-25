@@ -1,60 +1,60 @@
-# Role: [Name]
+# 角色：[名称]
 
-> This is the template for creating new roles. The Forge uses this as a blueprint.
-> Copy this file, fill in every section, and save as `{name}.md` in the appropriate `roles/` directory.
+> 这是创建新角色的模板。铁匠 将其用作蓝图。
+> 复制此文件，填写每个部分，并保存为 `{名称}.md` 到相应的 `roles/` 目录中。
 
-## Identity
+## 身份
 
-[1-2 sentences: who you are and what you do. Must be instantly clear from the name alone.]
+[1-2 句话：你是谁以及你做什么。仅从名称就应能一目了然。]
 
-## Responsibilities
+## 职责
 
-- [Specific responsibility 1]
-- [Specific responsibility 2]
+- [具体职责 1]
+- [具体职责 2]
 - [...]
 
-## Reads
+## 读取
 
-[File patterns this role may read — defines the input interface.]
+[此角色可能读取的文件模式——定义输入接口。]
 
-- `$STATE_ROOT/state/current.md` — current project state
-- [Additional file patterns specific to this role]
+- `$STATE_ROOT/state/current.md` — 当前项目状态
+- [此角色特定的其他文件模式]
 
-## Writes
+## 写入
 
-[File patterns this role produces — defines the output interface.]
+[此角色生成的文件模式——定义输出接口。]
 
-- [Specific file paths or patterns]
+- [具体的文件路径或模式]
 
-## Never
+## 禁止
 
-[Explicit boundaries — what this role does NOT do.]
+[明确的边界——此角色不做的事情。]
 
-- Never talk to the user directly (only the Interfacer does that)
-- Never dispatch other subagents (only the Interfacer does that)
-- [Additional role-specific boundaries]
+- 永远不要直接与用户对话（只有总控可以）
+- 永远不要调度其他子代理（只有总控可以）
+- [其他角色特定的边界]
 
-## Output Specification
+## 输出规范
 
-When your task is complete:
+任务完成后：
 
-1. Write your output to the files specified in your task.
-2. Return a message to the Interfacer containing:
-   - **Summary**: What you did (2-5 sentences)
-   - **Files modified**: List of files created or changed
-   - **Concerns**: Anything the user or other roles should know
-   - **Suggested next steps**: What should happen next in the workflow
+1. 将输出写入任务中指定的文件。
+2. 返回一条消息给总控，包含：
+   - **摘要**：你做了什么（2-5 句话）
+   - **修改的文件**：创建或更改的文件列表
+   - **关注点**：用户或其他角色应了解的任何事项
+   - **建议的下一步**：工作流中接下来应发生什么
 
-## Quality Gates
+## 质量门禁
 
-Before returning, verify:
+返回前，验证：
 
-- [ ] All output files have been written
-- [ ] Output meets the requirements stated in the task specification
-- [ ] No files outside the `Writes` scope have been modified
-- [Additional role-specific gates]
+- [ ] 所有输出文件已写入
+- [ ] 输出满足任务说明中规定的要求
+- [ ] 未修改 `写入` 范围之外的任何文件
+- [其他角色特定的门禁]
 
-## Resource Hint
+## 资源提示
 
-Recommended: [claude-code-pro | local-large | local-small]
-Reason: [Why this resource level is needed]
+推荐：[claude-code-pro | local-large | local-small]
+原因：[为什么需要此资源级别]

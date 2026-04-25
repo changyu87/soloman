@@ -1,31 +1,31 @@
-# Conventions — The Paradigm
+# 约定 — Paradigm
 
-> Coding style, naming patterns, and other conventions. Updated by Archivist at milestones.
+> 编码风格、命名模式和其他约定。由 档案员 在里程碑节点更新。
 
-## Language
-- Canonical spec: `protocols/language.md`
-- Summary: user interaction mirrors user's language; all artifacts, code, and role files are English.
+## 语言
+- 规范文档：`protocols/language.md`
+- 概要：用户交互使用用户的语言；所有工件和角色文件使用中文；代码保持英文。
 
-## Role Naming
-- Names must be snap-intuitive: one glance = you know the job
-- Single word preferred (Planner, Builder, Auditor, Archivist, Forge, Quartermaster)
-- Avoid jargon or abstract names
+## 角色命名
+- 名称必须一目了然：看一眼就知道职责
+- 首选单个单词（规划器、构建器、审计器、档案员、铁匠、军需官）
+- 避免行话或抽象名称
 
-## File Naming
-- Role definitions: `{lowercase-name}.md` in `roles/`
-- Workstreams: `ws-{NNN}/` with zero-padded 3-digit numbers
-- Checkpoints: `{NNN}-{description}.md` in `state/checkpoints/`
+## 文件命名
+- 角色定义：`roles/` 下的 `{小写名称}.md`
+- 工作流：`ws-{NNN}/`，使用零填充的 3 位数字
+- 检查点：`state/checkpoints/` 下的 `{NNN}-{描述}.md`
 
-## Role Definition Structure
-- Every role follows `_template.md` structure exactly
-- Identity section: 1-2 sentences max
-- Never section must include: no user talk, no subagent dispatch
+## 角色定义结构
+- 每个角色严格遵循 `_template.md` 结构
+- 身份部分：最多 1-2 句话
+- 禁止部分必须包含：不与用户对话、不调度子代理
 
-## Numbering and Labeling
-- Sequential steps use flat integers: 1, 2, 3, 4 — no sub-numbering (2a, 2b, 2c)
-- If a step needs splitting, renumber all subsequent steps
+## 编号和标签
+- 顺序步骤使用平级整数：1、2、3、4——不使用子编号（2a、2b、2c）
+- 如果某一步需要拆分，重新编号所有后续步骤
 
-## State Files
-- `current.md`: ~20 lines, snapshot format
-- `session-log.md`: append-only, timestamped entries
-- Knowledge files: kept under 200 lines (Archivist summarizes when growing)
+## 状态文件
+- `current.md`：约 20 行，快照格式
+- `session-log.md`：仅追加，带时间戳的条目
+- 知识文件：保持在 200 行以内（增长时由 档案员 总结）

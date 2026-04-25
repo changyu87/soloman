@@ -1,66 +1,41 @@
-# Protocol: Language Handling
+# 协议：语言处理
 
-The Paradigm supports multilingual users while keeping all internal
-artifacts in English. The Interfacer auto-detects the user's language
-on every turn and mirrors it. Every file written by any role stays in
-English so subagents receive consistent input across projects and
-sessions.
+Soloman 支持多语言用户，同时保持所有内部产物使用中文。总控在每一轮自动检测用户语言并进行镜像回复。所有角色写入的文件均使用中文，以确保子代理在不同项目和会话间获得一致的输入。
 
-## 1. Detection (per turn, automatic)
+## 1. 检测（每轮自动进行）
 
-- The Interfacer detects the user's language from each incoming
-  message. No opt-out, no `config.yaml` field.
-- Mixed-language input: pick the dominant language; if tied, default
-  to English.
-- Proper nouns, code, file paths, and quoted strings are excluded
-  from detection (they do not count as "language content").
-- Language may change mid-session; every turn is re-detected
-  independently.
+- 总控从每条传入消息中检测用户语言。不可选择退出，无需 `config.yaml` 配置项。
+- 混合语言输入：选取主导语言；若持平，默认使用英语。
+- 专有名词、代码、文件路径和引号内的字符串不参与检测（它们不计入"语言内容"）。
+- 语言可能在会话中途切换；每一轮独立重新检测。
 
-## 2. Artifacts are English-only
+## 2. 产物仅限中文
 
-All role-written files are English:
+所有角色写入的文件均为中文：
 
-- `brief.md`, `plan.md`, `status.md`, `audit-*.md`
-- `state/current.md`, `state/session-log.md`
-- `knowledge/*.md`, `checkpoints/*.md`
-- Any new role-written file is English by default.
+- `brief.md`、`plan.md`、`status.md`、`audit-*.md`
+- `state/current.md`、`state/session-log.md`
+- `knowledge/*.md`、`checkpoints/*.md`
+- 任何新增的角色写入文件默认使用中文。
 
-## 3. Translation at presentation time
+## 3. 展示时翻译
 
-When the Interfacer presents an artifact (plan summary, status,
-audit result, brief excerpt) to the user, it translates the English
-source into the user's current language on the fly. The source file
-stays English; translation is ephemeral.
+当总控向用户展示产物（计划摘要、状态、审计结果、简报摘录）时，它会将中文源文件实时翻译成用户当前使用的语言。源文件保持中文不变；翻译是临时的。
 
-## 4. Code is English-only
+## 4. 代码仅限英文
 
-Source code, comments, commit messages, variable names, and
-identifiers are English regardless of the user's language.
+源代码、注释、提交信息、变量名和标识符无论用户使用何种语言，均使用英文。
 
-## 5. Role definitions are English-only
+## 5. 角色定义仅限中文
 
-`$ROLES_DIR/*.md` and `$STATE_ROOT/roles/*.md` are English. No
-translated overrides. Role files are a system contract, not
-user-facing content.
+`$ROLES_DIR/*.md` 和 `$STATE_ROOT/roles/*.md` 使用中文。无英文覆盖。角色文件是系统契约，而非面向用户的内容。
 
-## 6. Clarifying questions to the user
+## 6. 向用户提出澄清问题
 
-Asked in the user's current language. The resulting `brief.md` is
-still written in English (the Interfacer translates the enriched
-requirement during write).
+以用户当前使用的语言提问。生成的 `brief.md` 仍使用中文编写（总控在写入时将已丰富需求进行翻译）。
 
-## Worked Examples
+## 工作示例
 
-- **Non-English turn**: user writes in a non-English language →
-  Interfacer asks clarifying questions in that language → writes
-  `brief.md` in English → presents plan summary translated to the
-  user's language.
-- **Mid-session switch**: user writes in one language on turn N and a
-  different language on turn N+1 → turn N+1's reply is in the new
-  language; all state files remain English.
-- **Mixed-language turn**: user writes a non-English sentence
-  containing English technical terms (e.g., identifiers, function
-  names). The English tokens are treated as code, not language
-  content, and are excluded from detection. The dominant carrier
-  language wins; the Interfacer replies in the carrier language.
+- **非英文轮次**：用户使用非英语语言书写 → 总控以该语言提出澄清问题 → 以中文编写 `brief.md` → 将计划摘要翻译成用户语言进行展示。
+- **会话中途切换**：用户在第 N 轮使用一种语言，在第 N+1 轮使用另一种语言 → 第 N+1 轮的回复使用新语言；所有状态文件保持中文。
+- **混合语言轮次**：用户书写包含英文技术术语（如标识符、函数名）的非英语句子。英文标记被视为代码而非语言内容，不参与检测。主导载体语言胜出；总控以载体语言回复。

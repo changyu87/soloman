@@ -1,10 +1,10 @@
-# Template: Project Initialization
+# 模板：项目初始化
 
-This template defines the `.paradigm/` scaffold created when The Paradigm is initialized in a new project.
+该模板定义了在初始化新项目时创建的 `.paradigm/` 脚手架结构。
 
-This scaffold runs in **both modes** — normal projects and self-mode (the paradigm source repo). In self-mode, the resulting `.paradigm/` is gitignored so session records stay per-working-copy.
+该脚手架在**两种模式**下运行——普通项目和自模式（范式源仓库）。在自模式下，生成的 `.paradigm/` 会被 gitignore 忽略，以便每个工作副本独立保存会话记录。
 
-## Directory Structure to Create
+## 需要创建的目录结构
 
 ```
 .paradigm/
@@ -24,7 +24,7 @@ This scaffold runs in **both modes** — normal projects and self-mode (the para
     └── conventions.md
 ```
 
-## Initial File Contents
+## 初始文件内容
 
 ### `config.yaml`
 
@@ -52,7 +52,7 @@ Session prompts: 0 | Subagent dispatches: 0
 Active workstream: none
 Last action: Project initialized
 Next: Awaiting user request
-Auditor: enabled
+审计器: enabled
 Language: en
 ```
 
@@ -74,7 +74,7 @@ Language: en
 Active workstream: none
 Last action: Project initialized
 Next: Awaiting user request
-Auditor: enabled
+审计器: enabled
 
 ## Recent turns (last 5, newest first)
 - [{time}] Project Initialized: scaffold created
@@ -88,10 +88,10 @@ Auditor: enabled
 ```markdown
 # Project File Index
 
-> Maintained by the Archivist. Last updated: {date}
+> Maintained by the 档案员. Last updated: {date}
 
 ## Structure
-[To be populated by Archivist on first scan]
+[To be populated by 档案员 on first scan]
 ```
 
 ### `knowledge/invariants.md`
@@ -99,7 +99,7 @@ Auditor: enabled
 ```markdown
 # Project Invariants
 
-> Hard rules that must never be violated. Updated by Archivist at milestones.
+> Hard rules that must never be violated. Updated by 档案员 at milestones.
 
 [No invariants established yet. These will be discovered during project work.]
 ```
@@ -109,14 +109,14 @@ Auditor: enabled
 ```markdown
 # Project Conventions
 
-> Coding style, naming patterns, and other conventions. Updated by Archivist at milestones.
+> Coding style, naming patterns, and other conventions. Updated by 档案员 at milestones.
 
 [No conventions established yet. These will be discovered during project work.]
 ```
 
-## Post-Initialization
+## 初始化后操作
 
-After creating the scaffold:
-1. Optionally dispatch Archivist to scan the project and populate `knowledge/index.md`
-2. Optionally dispatch Quartermaster to inventory available resources
-3. Present the greeting to the user
+创建脚手架后：
+1. 可选：派遣档案员扫描项目并填充 `knowledge/index.md`
+2. 可选：派遣军需官盘点可用资源
+3. 向用户展示欢迎信息

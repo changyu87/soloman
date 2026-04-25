@@ -1,29 +1,29 @@
-# Template: Workstream Initialization
+# 模板：工作流初始化
 
-This template defines how a new workstream is created within an active project.
+该模板定义了如何在已有项目中创建新的工作流。
 
-## When to Create a Workstream
+## 何时创建工作流
 
-A new workstream is created when:
-- The Interfacer receives a new work request from the user
-- The enrichment phase is complete and the request is clear enough to plan
+以下情况需要创建新的工作流：
+- 总控收到用户的新工作请求
+- 信息充实阶段完成，请求已足够清晰以制定计划
 
-## Steps
+## 步骤
 
-### 1. Increment Counter
+### 1. 递增计数器
 
-Read `config.yaml → workstream_counter`, increment by 1, write back.
-Use the new value as `{NNN}` (zero-padded to 3 digits: 001, 002, etc.).
+读取 `config.yaml → workstream_counter`，递增 1，写回。
+使用新值作为 `{NNN}`（零填充至 3 位：001、002，依此类推）。
 
-### 2. Create Workstream Directory
+### 2. 创建工作流目录
 
 ```
 workstreams/active/ws-{NNN}/
 ```
 
-### 3. Write Brief
+### 3. 编写 Brief
 
-Write the enriched requirement to `ws-{NNN}/brief.md`:
+将充实后的需求写入 `ws-{NNN}/brief.md`：
 
 ```markdown
 # Brief — ws-{NNN}
@@ -45,12 +45,12 @@ Requested by: User
 - [How to know this is done]
 
 ## Context Files
-- [File paths relevant to this workstream, gathered from Archivist or Interfacer knowledge]
+- [File paths relevant to this workstream, gathered from 档案员 or 总控 knowledge]
 ```
 
-### 4. Write Initial Status
+### 4. 编写初始状态
 
-Write `ws-{NNN}/status.md`:
+写入 `ws-{NNN}/status.md`：
 
 ```markdown
 # Workstream Status — ws-{NNN}
@@ -61,19 +61,19 @@ Created: {YYYY-MM-DD}
 ## Progress
 - [x] Brief written
 - [ ] Plan created
-- [ ] Plan reviewed (Auditor)
+- [ ] Plan reviewed (审计器)
 - [ ] User approved plan
 - [ ] Build executed
-- [ ] Build reviewed (Auditor)
+- [ ] Build reviewed (审计器)
 - [ ] Workstream complete
 ```
 
-### 5. Update Session State
+### 5. 更新会话状态
 
-Update `state/current.md` to reflect the new active workstream.
-Append to `state/session-log.md`.
+更新 `state/current.md` 以反映新的活跃工作流。
+追加记录到 `state/session-log.md`。
 
-## Workstream Lifecycle
+## 工作流生命周期
 
 ```
 Created → Planning → Plan Review → Approved → Building → Build Review → Complete
@@ -81,4 +81,4 @@ Created → Planning → Plan Review → Approved → Building → Build Review 
                   └── User requests changes ─┘
 ```
 
-On completion: Move `ws-{NNN}/` from `active/` to `completed/`.
+完成后：将 `ws-{NNN}/` 从 `active/` 移动到 `completed/`。

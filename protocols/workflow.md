@@ -1,148 +1,142 @@
-# Protocol: Standard Workflow
+# 协议：标准工作流
 
-This document defines the standard workflow for processing a user request through The Paradigm.
+本文档定义了通过范式处理用户请求的标准工作流。
 
-## Flow
+## 流程
 
-### 1. User Request → Interfacer Enrichment
+### 1. 用户请求 → 总控丰富
 
-The Interfacer receives the user's message and enriches it:
-- Parses intent, identifies ambiguities
-- Asks clarifying questions if needed (only the Interfacer talks to the user)
-- Produces a structured brief written to `workstreams/active/ws-{NNN}/brief.md`
+总控接收用户消息并进行丰富：
+- 解析意图，识别歧义
+- 必要时提出澄清问题（仅总控与用户对话）
+- 生成结构化简报，写入 `workstreams/active/ws-{NNN}/brief.md`
 
-### 2. Context Gathering (optional) → Archivist
+### 2. 上下文收集（可选）→ 档案员
 
-If the Interfacer needs file context for the Planner:
-- Dispatch Archivist subagent with description of what context is needed
-- Archivist returns relevant file paths and brief descriptions
-- Interfacer includes these paths in the Planner prompt
+若总控需要为规划器提供文件上下文：
+- 派遣档案员子代理，描述需要何种上下文
+- 档案员返回相关文件路径及简要描述
+- 总控将这些路径包含在规划器的提示中
 
-### 3. Planning → Planner
+### 3. 规划 → 规划器
 
-Dispatch Planner subagent with:
-- `brief.md` (enriched requirement)
-- File paths from Archivist (if gathered)
-- Relevant knowledge files (invariants, conventions)
-- Current project state
+向规划器子代理派遣以下内容：
+- `brief.md`（已丰富的需求）
+- 档案员提供的文件路径（如已收集）
+- 相关的知识文件（不变项、约定）
+- 当前项目状态
 
-Planner writes `plan.md` and returns summary.
+规划器编写 `plan.md` 并返回摘要。
 
-**When Planner may be skipped:**
+**可跳过规划器的情况：**
 
-The Interfacer may bypass Planner dispatch when the brief fully
-specifies the change — all target files named, exact before/after
-text provided, and no architectural or design decisions remaining.
-In this case the brief itself serves as the plan. The workstream
-still runs Builder and Auditor(build). If ambiguity surfaces
-mid-build, the Interfacer pauses and retroactively dispatches
-Planner.
+当简报已完整说明变更内容——所有目标文件已命名、提供了精确的变更前后文本、且无待解决的架构或设计决策时，总控可绕过规划器派遣。此时简报本身即作为计划。工作流仍会执行构建器和审计器（构建）。若构建过程中出现歧义，总控暂停并追溯性地派遣规划器。
 
-### 4. Plan Review (if Auditor enabled) → Auditor
+### 4. 计划审查（若审计器启用）→ 审计器
 
-Dispatch Auditor subagent with:
-- `brief.md` (original requirement)
-- `plan.md` (Planner's output)
-- Relevant invariants and conventions
+向审计器子代理派遣以下内容：
+- `brief.md`（原始需求）
+- `plan.md`（规划器的输出）
+- 相关的不变项和约定
 
-Auditor writes `audit-plan.md` and returns verdict.
+审计器编写 `audit-plan.md` 并返回裁决。
 
-### 5. User Approval → Interfacer
+### 5. 用户批准 → 总控
 
-Interfacer presents the plan (and Auditor findings if applicable) to the user.
+总控向用户展示计划（以及审计器的发现，如适用）。
 
-#### What "present" means
+#### "展示"的含义
 
-Interfacer must surface, in the same turn:
-- A link or inline path to the full `plan.md` (and `audit-plan.md` if Auditor ran)
-- A top-level summary covering: recommendation, scope, Builder task count, risks
-- If Auditor returned APPROVE-WITH-NOTES or REJECT: every Critical finding verbatim, and counts of Important/Minor
+总控必须在同一轮中呈现：
+- 完整 `plan.md`（以及审计器运行时的 `audit-plan.md`）的链接或内联路径
+- 顶层摘要，涵盖：建议、范围、构建器任务数量、风险
+- 若审计器返回"有条件批准"或"拒绝"：逐字列出每项关键发现，并注明重要/次要发现的数量
 
-A summary without the full plan reference is NOT a valid present. A decision-question (AskUserQuestion) about findings is NOT a valid present.
+仅有摘要而无完整计划引用的展示无效。关于发现的提问决策（AskUserQuestion）不构成有效展示。
 
-#### What "approval" means
+#### "批准"的含义
 
-Approval is an **explicit free-text confirmation from the user** in a subsequent turn. Accepted forms include (non-exhaustive): "approve", "approved", "yes, proceed", "go", "同意", "OK", "LGTM". The phrase must be unambiguous and refer to the most-recently-presented plan.
+批准是用户在后续轮次中**明确的自由文本确认**。可接受的形式包括（不限于）："approve"、"approved"、"yes, proceed"、"go"、"同意"、"OK"、"LGTM"。该表述必须明确无误，且指向最近展示的计划。
 
-The following are NOT approval:
-- User selecting options in an AskUserQuestion (those resolve design choices, not the gate).
-- User silence.
-- User answering a clarifying question.
-- User saying "looks good" about a single finding without addressing the plan as a whole.
+以下情况不构成批准：
+- 用户在 AskUserQuestion 中选择选项（这些用于解决设计选择，而非关卡）。
+- 用户保持沉默。
+- 用户回答澄清性问题。
+- 用户仅对单个发现表示"看起来不错"，而未针对整个计划表态。
 
-#### Handling Auditor-with-notes
+#### 处理审计器附注
 
-When Auditor returns APPROVE-WITH-NOTES:
-1. If open design decisions remain in the notes, Interfacer MAY use AskUserQuestion to resolve them. This is enrichment, not approval.
-2. Interfacer applies the chosen fixes to `plan.md`.
-3. Interfacer then RE-PRESENTS the revised plan per "What present means" above.
-4. Interfacer awaits explicit approval per "What approval means".
-5. Only then may Builder be dispatched.
+当审计器返回"有条件批准"时：
+1. 若附注中仍有待解决的设计决策，总控可使用 AskUserQuestion 来解决。这属于丰富环节，而非批准。
+2. 总控将选定的修复方案应用到 `plan.md`。
+3. 总控随后按照"展示的含义"重新展示修订后的计划。
+4. 总控等待按照"批准的含义"获得明确批准。
+5. 只有在此之后才能派遣构建器。
 
-#### User response branches
+#### 用户回复分支
 
-User may:
-- **Approve** (explicit text) → proceed to Build
-- **Request changes** → Interfacer enriches feedback, re-dispatches Planner (or amends brief-as-plan if Planner was skipped)
-- **Reject** → Interfacer asks for new requirements or archives the workstream
+用户可以：
+- **批准**（明确文本）→ 进入构建阶段
+- **请求变更** → 总控丰富反馈，重新派遣规划器（若已跳过规划器，则修改作为计划的简报）
+- **拒绝** → 总控询问新需求或归档工作流
 
-#### Invariant
+#### 不变项
 
-The Interfacer MUST NOT dispatch Builder (or any role that modifies project source files on behalf of the approved plan, including Forge operations scheduled by the plan) until explicit approval per this section has been received. Violating this is a protocol violation and must be surfaced to the user.
+在收到本节所述的明确批准之前，总控**不得**派遣构建器（或任何代表已批准计划修改项目源文件的角色，包括计划中安排的铁匠操作）。违反此规定属于协议违规，必须向用户说明。
 
-See also `protocols/clear.md` and Invariant 14 — destructive state operations apply the same free-text-confirmation pattern to a separate gate.
+另请参见 `protocols/clear.md` 和不变项 14——破坏性状态操作对单独的关卡应用相同的自由文本确认模式。
 
-### 6. Execution → Builder
+### 6. 执行 → 构建器
 
-Dispatch Builder subagent with:
-- `plan.md` (approved plan)
-- All file paths the Builder needs to read/write
-- Project conventions and invariants
+向构建器子代理派遣以下内容：
+- `plan.md`（已批准的计划）
+- 构建器需要读取/写入的所有文件路径
+- 项目约定和不变项
 
-Builder executes the plan, modifies project files, updates `status.md`, returns summary.
+构建器执行计划，修改项目文件，更新 `status.md`，返回摘要。
 
-### 7. Build Review (if Auditor enabled) → Auditor
+### 7. 构建审查（若审计器启用）→ 审计器
 
-Dispatch Auditor subagent with:
-- `brief.md`, `plan.md`, `status.md`
-- Files modified by Builder
-- Invariants and conventions
+向审计器子代理派遣以下内容：
+- `brief.md`、`plan.md`、`status.md`
+- 构建器修改的文件
+- 不变项和约定
 
-Auditor writes `audit-build.md` and returns verdict.
-- **APPROVE**: Proceed to completion.
-- **APPROVE-WITH-NOTES**: Present notes to user, proceed.
-- **REJECT**: Present findings to user. Options: re-dispatch Builder with fixes, or re-plan.
+审计器编写 `audit-build.md` 并返回裁决。
+- **批准**：进入完成阶段。
+- **有条件批准**：向用户展示附注，继续执行。
+- **拒绝**：向用户展示发现。选项：重新派遣构建器进行修复，或重新规划。
 
-### 8. Completion → Interfacer + Archivist
+### 8. 完成 → 总控 + 档案员
 
-Interfacer presents results to user. If the workstream is complete:
-- Move `ws-{NNN}/` from `active/` to `completed/`
-- Dispatch Archivist to update knowledge base and write checkpoint
+总控向用户展示结果。若工作流已完成：
+- 将 `ws-{NNN}/` 从 `active/` 移至 `completed/`
+- 派遣档案员更新知识库并写入检查点
 
-### 9. State Save → Interfacer
+### 9. 状态保存 → 总控
 
-Update `state/current.md` and append to `state/session-log.md`.
+更新 `state/current.md` 并追加到 `state/session-log.md`。
 
 ---
 
-## Forge Interventions
+## 铁匠干预
 
-At any point, if the Planner's plan recommends a new role, or the user requests role changes:
-1. Interfacer dispatches Forge with the role creation/edit/delete request
-2. Forge writes the role file
-3. Interfacer reloads the affected role definition from disk
-4. Workflow continues with the new/modified role available
+在任何时候，若规划器的计划建议新增角色，或用户请求变更角色：
+1. 总控向铁匠派遣角色创建/编辑/删除请求
+2. 铁匠写入角色文件
+3. 总控从磁盘重新加载受影响角色的定义
+4. 工作流继续，新/修改后的角色可用
 
-## Quartermaster Interventions
+## 军需官干预
 
-When the user reports hardware/resource changes:
-1. Interfacer dispatches Quartermaster
-2. Quartermaster inventories resources and updates allocation
-3. If active workstreams are affected, Interfacer may re-dispatch Planner to adjust plans
+当用户报告硬件/资源变更时：
+1. 总控派遣军需官
+2. 军需官盘点资源并更新分配
+3. 若活跃工作流受到影响，总控可重新派遣规划器以调整计划
 
-## Error Handling
+## 错误处理
 
-If a subagent returns an error or "I need more context":
-1. Interfacer dispatches Archivist to gather the requested context
-2. Interfacer re-dispatches the original subagent with additional context
-3. If the subagent fails again, Interfacer reports to user and asks for guidance
+若子代理返回错误或"我需要更多上下文"：
+1. 总控派遣档案员收集所请求的上下文
+2. 总控重新派遣原子代理，附带额外上下文
+3. 若子代理再次失败，总控向用户报告并请求指导

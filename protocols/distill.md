@@ -1,85 +1,48 @@
-# Protocol: Distill Operation
+# Protocol: Distill 操作
 
-Read-only, single-stage meta-command that audits token efficiency of the
-current project (normal mode) or the paradigm source repo (self-mode).
-Output is a single `findings.md`. No source files are modified. No
-destructive operation is performed. No approval gate (Invariant 13)
-applies to the Distiller dispatch itself; the gate DOES apply to any
-follow-up Planner → Builder/Forge workstream the user asks for.
+只读、单阶段的元命令，用于审计当前项目（普通模式）或范式源代码仓库（自模式）的 token 效率。
+输出为单个 `findings.md` 文件。不修改任何源文件。不执行任何破坏性操作。审批门禁（不变式 13）
+不适用于蒸馏器调度本身；该门禁**确实**适用于用户要求的任何后续规划器 → 构建器/铁匠工作流。
 
-## Classification
+## 分类
 
-`class=meta`, `gate=direct`. Peer of `clear`. Unlike `clear`, this
-operation is non-destructive, so Invariant 14 does not apply and no
-anchor word is required.
+`类别=元命令`，`关卡=直接`。与 `clear` 同级。与 `clear` 不同，此操作
+是非破坏性的，因此不变式 14 不适用，也不需要锚定词。
 
-## Trigger phrase bank
+## 触发短语库
 
-- **Slash**: `/soloman distill`
-- **EN**: "distill", "run distill", "run a distill pass",
-  "audit token efficiency", "token-efficiency audit",
-  "run a token audit"
-- **ZH**: "跑一次 distill", "审计 token 效率", "做一次 token 效率审计",
-  "运行 distill"
+- **斜杠式**：`/soloman distill`
+- **英文**："distill", "run distill", "run a distill pass", "audit token efficiency", "token-efficiency audit", "run a token audit"
+- **中文**："跑一次 distill", "审计 token 效率", "做一次 token 效率审计", "运行 distill"
 
-The meta-classifier matches on the literal token `distill` or the
-paraphrase set above. Because `distill` is not a common English verb in
-this project's conversational context, no anchor word is required.
+元分类器匹配字面 token `distill` 或上述释义集。由于 `distill` 在此项目的对话上下文中不是一个常见的英文动词，因此不需要锚定词。
 
-## Scope invariant
+## 范围不变式
 
-The Distiller **always ignores** the `.paradigm/` directory as an audit
-target. Self-mode audits `$PARADIGM_REPO` (roles/, protocols/, skill/,
-templates/, knowledge/, scripts/). Normal mode audits the project source
-tree. In both modes, `.paradigm/` is out of scope as an audit target,
-even though specific state artifacts under `$STATE_ROOT/state/` and
-`$STATE_ROOT/workstreams/` ARE read as inputs for runtime-behavioral
-inference. This carve-out is encoded verbatim in the Distiller's
-`Never` section.
+蒸馏器 **始终忽略** `.paradigm/` 目录作为审计目标。自模式审计 `$PARADIGM_REPO`（roles/, protocols/, skill/, templates/, knowledge/, scripts/）。普通模式审计项目源代码树。在两种模式下，`.paradigm/` 都不在审计目标范围内，尽管 `$STATE_ROOT/state/` 和 `$STATE_ROOT/workstreams/` 下的特定状态工件**确实**被读取作为运行时行为推断的输入。这一例外情况逐字编码在 蒸馏器 的 `Never` 部分中。
 
-## Flow (single-stage)
+## 流程（单阶段）
 
-1. **Intent detection**: normal `class=meta` classifier catches the
-   trigger.
-2. **Self-edit safety check**: if a Distiller dispatch has already
-   occurred in the current user turn, the Interfacer refuses the second
-   dispatch with a one-liner ("A distill pass already ran this turn —
-   review its findings before running another.") and returns to normal
-   meta-dispatch. No subagent is launched.
-3. **Prepare output path**: Interfacer computes
-   `$STATE_ROOT/distill/$(date -u +%Y-%m-%d-%H%M)/findings.md` and
-   creates the parent directory via Bash (`mkdir -p`).
-4. **Dispatch Distiller**: one subagent invocation. Task spec includes
-   the audit target (self-mode vs. normal-mode, derived from mode
-   detection at session start) and the exact output path.
-5. **Present findings**: Interfacer reads `findings.md`, summarizes the
-   top 2-3 recommendations in the user's detected language, and
-   displays the absolute path.
-6. **Ask next step (design-choice AUQ, NOT approval gate)**:
-   AskUserQuestion with three options —
-   - "Create a Planner workstream from these findings"
-   - "Save findings only — decide later"
-   - "Discard findings (delete the directory)"
-   On option 1: route into the standard new-workstream flow with
-   `findings.md` as the enriched requirement. On option 2: no-op.
-   On option 3: `rm -rf` the timestamped directory (non-destructive
-   of paradigm state; Invariant 14 does not apply because no paradigm
-   state is touched).
+1. **意图检测**：常规的 `类别=元命令` 分类器捕获触发信号。
+2. **自编辑安全检查**：如果在当前用户轮次中已经执行过一次蒸馏器调度，总控将拒绝第二次调度，回复一行提示（"本轮已运行过一次 distill——请先审阅其发现结果，再运行下一次。"）并返回正常的元调度流程。不启动子代理。
+3. **准备输出路径**：总控计算 `$STATE_ROOT/distill/$(date -u +%Y-%m-%d-%H%M)/findings.md` 并通过 Bash 命令（`mkdir -p`）创建父目录。
+4. **调度蒸馏器**：一次子代理调用。任务说明包括审计目标（自模式 vs. 普通模式，根据会话启动时的模式检测确定）和确切的输出路径。
+5. **呈现发现结果**：总控读取 `findings.md`，以用户检测到的语言总结前 2-3 条建议，并显示绝对路径。
+6. **询问下一步（设计选择的 AUQ，非审批门禁）**：AskUserQuestion 提供三个选项——
+   - "根据这些发现结果创建规划器工作流"
+   - "仅保存发现结果——稍后决定"
+   - "丢弃发现结果（删除目录）"
+   选项 1：以 `findings.md` 作为增强需求进入标准的新建工作流流程。选项 2：无操作。选项 3：`rm -rf` 该时间戳目录（对范式状态无破坏性；不变式 14 不适用，因为未触及任何范式状态）。
 
-## Invariants
+## 不变式
 
-- Distiller is read-only; it never edits source, roles, protocols, or
-  templates. Enforced by `roles/distiller.md` Never section.
-- Distiller never dispatches other subagents (Invariant 2).
-- Self-edit safety: at most one Distiller dispatch per user turn.
-- AskUserQuestion at step 6 is a design choice, NOT the Invariant 13
-  approval gate; if the user picks option 1, the resulting Planner
-  workstream still goes through the full §5 flow including free-text
-  approval before any Builder/Forge dispatch.
+- 蒸馏器是只读的；它从不编辑源代码、角色、协议或模板。由 `roles/distiller.md` 的 Never 部分强制执行。
+- 蒸馏器从不调度其他子代理（不变式 2）。
+- 自编辑安全：每个用户轮次最多一次蒸馏器调度。
+- 步骤 6 的 AskUserQuestion 是设计选择，**不是**不变式 13 的审批门禁；如果用户选择选项 1，生成的规划器工作流仍然需要经过完整的 §5 流程，包括在调度构建器/铁匠之前的自由文本审批。
 
-## Cross-references
+## 交叉引用
 
-- `roles/distiller.md` — the role prompt.
-- `skill/SKILL.md` Meta-Commands — the `distill` registration entry.
-- `protocols/workflow.md` §5 — approval gate applies to any follow-up
-  workstream, not to the Distiller dispatch itself.
+- `roles/distiller.md` — 角色提示词。
+- `skill/SKILL.md` 元命令 — `distill` 的注册条目。
+- `protocols/workflow.md` §5 — 审批门禁适用于任何后续工作流，不适用于蒸馏器调度本身。

@@ -1,81 +1,81 @@
-# Protocol: Forge Operations
+# Protocol: 铁匠 操作
 
-This document defines the rules and procedures for creating, editing, and deleting roles.
+本文档定义了创建、编辑和删除角色的规则与流程。
 
-## Who Can Invoke the Forge
+## 谁可以调用 铁匠
 
-The Forge is dispatched by the Interfacer when:
-1. **User requests it**: "Create a Translator role", "Edit the Builder role", "Delete the X role"
-2. **Planner recommends it**: Plan includes "New Roles Needed: [role name]"
-3. **Interfacer identifies a gap**: A dispatched role's task clearly requires capabilities not covered by existing roles
+铁匠 由总控在以下情况调度：
+1. **用户请求**："创建一个翻译官角色"、"编辑构建器角色"、"删除 X 角色"
+2. **规划器推荐**：计划中包含"需要新角色：[角色名]"
+3. **总控发现缺口**：已调度角色的任务明显需要现有角色未覆盖的能力
 
-## Operations
+## 操作
 
-### Create a New Role
+### 创建新角色
 
-1. Interfacer dispatches Forge with:
-   - Role name and purpose
-   - Expected responsibilities
-   - Whether it's universal (`$PARADIGM_REPO/roles/`, self-mode only) or project-specific (`$STATE_ROOT/roles/`)
-2. Forge reads `_template.md` and creates the new role file
-3. Forge returns confirmation + reload advisory
-4. Interfacer reloads from disk — the new role is immediately dispatchable
+1. 总控向 铁匠 下发以下信息：
+   - 角色名称和用途
+   - 预期职责
+   - 是通用角色（`$PARADIGM_REPO/roles/`，仅自模式）还是项目专用角色（`$STATE_ROOT/roles/`）
+2. 铁匠 读取 `_template.md` 并创建新的角色文件
+3. 铁匠 返回确认信息 + 重新加载建议
+4. 总控从磁盘重新加载——新角色立即可调度
 
-### Edit an Existing Role
+### 编辑现有角色
 
-1. Interfacer dispatches Forge with:
-   - Which role to edit
-   - What changes are needed and why
-2. Forge reads the current role file, makes changes
-3. Forge returns summary of changes + reload advisory
-4. Interfacer reloads from disk
+1. 总控向 铁匠 下发以下信息：
+   - 要编辑哪个角色
+   - 需要哪些更改及其原因
+2. 铁匠 读取当前角色文件，进行修改
+3. 铁匠 返回更改摘要 + 重新加载建议
+4. 总控从磁盘重新加载
 
-### Delete a Role
+### 删除角色
 
-1. **Approval required**: The task specification MUST state that user or Planner has approved the deletion.
-2. Forge verifies it is NOT being asked to delete itself (invariant: Forge cannot be deleted).
-3. Forge deletes the role file.
-4. Forge returns confirmation.
-5. Interfacer notes the role is no longer available.
+1. **需要审批**：任务说明必须声明用户或规划器已批准删除。
+2. 铁匠 确认未被要求删除自身（不变式：铁匠 不可被删除）。
+3. 铁匠 删除角色文件。
+4. 铁匠 返回确认信息。
+5. 总控记录该角色不再可用。
 
-## Invariants
+## 不变式
 
-1. **Self-preservation**: The Forge can edit `forge.md` but CANNOT delete it. If asked to delete itself, it must refuse and report the refusal to the Interfacer.
+1. **自我保护**：铁匠 可以编辑 `forge.md`，但**不能**删除它。如果被要求删除自身，必须拒绝并向总控报告拒绝情况。
 
-2. **Template compliance**: Every role created or edited MUST follow the `_template.md` structure:
-   - Identity (1-2 sentences)
-   - Responsibilities (list)
-   - Reads (file patterns)
-   - Writes (file patterns)
-   - Never (boundaries, must include "no user talk" and "no subagent dispatch")
-   - Output Specification
-   - Quality Gates
-   - Resource Hint
+2. **模板合规**：每个创建或编辑的角色必须遵循 `_template.md` 结构：
+   - 身份（1-2 句话）
+   - 职责（列表）
+   - 读取（文件模式）
+   - 写入（文件模式）
+   - 禁止（边界，必须包含"不得与用户闲聊"和"不得调度子代理"）
+   - 输出规范
+   - 质量门禁
+   - 资源提示
 
-   **Reference-document exemption**: A role file is a *reference document* if its opening block explicitly declares it (e.g., `> This is a **reference document**, NOT a subagent prompt.`). Reference documents describe a role's contract for other roles to read; they are not dispatched as subagents. For these files, `Output Specification` and `Quality Gates` are NOT required and MUST NOT be added by the Forge. All other sections (Identity, Responsibilities, Reads, Writes, Never, Resource Hint) remain required. The canonical example is `roles/interfacer.md` — the Interfacer's behavior lives in `skill/SKILL.md`, not in a dispatch prompt.
+   **参考文档豁免**：如果角色文件的起始块明确声明其为参考文档（例如 `> 这是一份**参考文档**，不是子代理提示词。`），则该角色文件属于*参考文档*。参考文档描述角色的契约供其他角色阅读，不作为子代理被调度。对于此类文件，**不要求**提供`输出规范`和`质量门禁`，铁匠 **不得**添加这些内容。所有其他部分（身份、职责、读取、写入、禁止、资源提示）仍然必需。典型示例是 `roles/interfacer.md`——总控的行为定义在 `skill/SKILL.md` 中，而非调度提示词中。
 
-3. **Immediate usability**: The Interfacer reads role definitions from disk at dispatch time. Writing a file = creating a dispatchable role. No restart or reconfiguration needed.
+3. **即时可用**：总控在调度时从磁盘读取角色定义。写入文件即创建可调度角色。无需重启或重新配置。
 
-4. **Reload mandate**: After ANY Forge operation, the Interfacer MUST reload the affected role definition from disk before the next dispatch of that role. The Forge's return message includes a reload advisory.
+4. **重新加载要求**：在执行任何 铁匠 操作后，总控**必须**在下次调度该角色之前从磁盘重新加载受影响的角色定义。铁匠 的返回消息中包含重新加载建议。
 
-5. **Deletion requires approval**: The Forge will not delete a role unless the task specification explicitly states that user or Planner has approved. The Forge should verify this.
+5. **删除需要审批**：除非任务说明明确声明用户或规划器已批准，否则 铁匠 不会删除角色。铁匠 应核实这一点。
 
-## Location Rules
+## 位置规则
 
-| Scope | Directory | When to Use | Availability |
+| 范围 | 目录 | 使用时机 | 可用性 |
 |---|---|---|---|
-| Universal | `$PARADIGM_REPO/roles/` | Role is useful across all projects; writes the source repo | Self-mode only |
-| Project-specific | `$STATE_ROOT/roles/` | Role is only relevant to this project | Both modes |
+| 通用 | `$PARADIGM_REPO/roles/` | 角色对所有项目都有用；写入源代码仓库 | 仅自模式 |
+| 项目专用 | `$STATE_ROOT/roles/` | 角色仅与当前项目相关 | 两种模式 |
 
-The installed skill bundle at `$SKILL_DIR/roles/` is read-only at runtime — universal edits happen against the source repo (`$SOLOMAN_REPO`) and are picked up by other installs after they re-run `install.sh`.
+安装在 `$SKILL_DIR/roles/` 的技能包在运行时是只读的——通用编辑针对源代码仓库（`$SOLOMAN_REPO`）进行，其他安装实例在重新运行 `install.sh` 后才会获取更改。
 
-In normal mode, `$SOLOMAN_REPO` is unset: if asked to edit a universal role, the Forge refuses and directs the user to clone the source repo and invoke `/soloman` there.
+在普通模式下，`$SOLOMAN_REPO` 未设置：如果被要求编辑通用角色，铁匠 将拒绝并引导用户克隆源代码仓库并在那里调用 `/soloman`。
 
-At dispatch time, when a role exists in both `$SOLOMAN_REPO/roles/` (or `$SKILL_DIR/roles/` in normal mode) and `$STATE_ROOT/roles/`, the project-specific version takes precedence (override).
+在调度时，如果角色同时存在于 `$SOLOMAN_REPO/roles/`（或普通模式下的 `$SKILL_DIR/roles/`）和 `$STATE_ROOT/roles/` 中，项目专用版本优先（覆盖）。
 
-## Self-Improvement
+## 自我改进
 
-The Forge can edit its own definition (`forge.md`). This enables the paradigm to improve its own meta-capabilities. However:
-- Self-edits should be conservative and well-reasoned
-- The Forge should explain why the self-edit improves its capabilities
-- Core invariants (especially self-preservation) must be maintained in any self-edit
+铁匠 可以编辑自身的定义（`forge.md`）。这使得范式能够改进自身的元能力。但：
+- 自我编辑应保守且理由充分
+- 铁匠 应解释自我编辑为何能改进其能力
+- 核心不变式（尤其是自我保护）必须在任何自我编辑中得到维护

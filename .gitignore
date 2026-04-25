@@ -1,6 +1,7 @@
 # Paradigm runtime state — scaffolded per working copy, not shipped.
 # See changelog.md v0.3.0 for rationale.
 .paradigm/
+.soloman/
 
 # Claude Code per-user local settings (permission grants, etc.)
 .claude/

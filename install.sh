@@ -9,7 +9,7 @@
 set -euo pipefail
 
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VERSION="0.1.0"
+VERSION="0.3.0"
 TRAE_MODE=false
 
 # Parse command line arguments

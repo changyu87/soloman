@@ -1,5 +1,36 @@
 # Soloman — Changelog
 
+## v0.3.0 — All roles renamed to Chinese (2026-04-25)
+
+### Changed
+- All role names renamed from English to Chinese:
+  - Interfacer → 总控
+  - Planner → 规划器
+  - Builder → 构建器
+  - Auditor → 审计器
+  - Archivist → 档案员
+  - Forge → 铁匠
+  - Distiller → 蒸馏器
+  - Quartermaster → 军需官
+- All role files renamed from English to Pinyin filenames
+- All references to English role names updated across codebase
+- [Route] protocol updated to use Chinese field names and values
+- Removed legacy CLAUDE.md file
+
+## v0.2.0 — Chinese-language artifacts & 总控 rename (2026-04-25)
+
+### Changed
+- Language policy: all on-disk artifacts (briefs, plans, audits, state files, knowledge, role definitions) are now written in Chinese instead of English. User-facing conversation continues to auto-detect and mirror the user's language per turn.
+- Role "Interfacer" renamed to "总控" (zǒngkòng — master controller). All references updated across roles, protocols, templates, knowledge, and skill definition.
+- `protocols/language.md` rewritten to reflect Chinese-artifact policy.
+- `roles/interfacer.md` renamed to `roles/zongkong.md` with updated content.
+- `skill/SKILL.md` updated: all language policy references and role name references changed.
+- All 6 protocol files updated for new role name.
+- All 9 role files updated for new role name (including archivist.md, builder.md, quartermaster.md, _template.md).
+- Knowledge files (conventions, index, invariants) updated.
+- `SOLOMAN.md` updated for new role name.
+- `templates/workstream-init.md` updated for new role name.
+
 ## v0.1.0 — Project renamed from the-paradigm to soloman (2026-04-24)
 
 ### Changed

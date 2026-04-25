@@ -1,48 +1,48 @@
 # Soloman
 
-A self-bootstrapping universal AI work paradigm.
+一个自举的通用 AI 工作范式。
 
-## What Is This?
+## 这是什么？
 
-Soloman decomposes complex AI-assisted work into specialized **roles** — an **Interfacer** (the main session, human-facing) orchestrating **subagents** (Planner, Builder, Auditor, etc.) that each get their own isolated context window. All communication happens through the file system.
+Soloman 将复杂的 AI 辅助工作分解为专门的**角色**——一个**总控**（主会话，面向人类）编排**子代理**（规划器、构建器、审计器等），每个子代理拥有独立的上下文窗口。所有通信通过文件系统进行。
 
-Soloman can manage any project — including producing and improving itself.
+Soloman 可以管理任何项目——包括生产和改进自身。
 
-## Why?
+## 为什么？
 
-Single-session AI work collapses when mid-project requirement changes cause context window overload. Quality degrades because one session tries to hold everything: requirements, architecture, implementation details, review feedback, and project history.
+单会话 AI 工作在项目中期需求变更导致上下文窗口过载时会崩溃。质量下降是因为一个会话试图容纳所有内容：需求、架构、实现细节、审查反馈和项目历史。
 
-Soloman solves this by ensuring no single session needs the full picture. Each role reads only what it needs, does its job, writes its output, and returns.
+Soloman 通过确保没有任何单个会话需要掌握全局来解决这个问题。每个角色只读取所需内容，完成自身工作，写入输出，然后返回。
 
-## Quick Start
+## 快速开始
 
-### Install
+### 安装
 
 ```bash
-# From the soloman source repo:
+# 从 soloman 源代码仓库：
 ./install.sh
 ```
 
-This assembles a self-contained skill bundle at `~/.claude/skills/soloman/` (SKILL.md + `roles/` + `protocols/` + `templates/` + `knowledge/` + a `VERSION` marker). The bundle is independent of the source repo — it works on any machine and does not reach back to the repo at runtime.
+这会组装一个自包含的技能包到 `~/.claude/skills/soloman/`（SKILL.md + `roles/` + `protocols/` + `templates/` + `knowledge/` + `VERSION` 标记）。该技能包独立于源代码仓库——它可以在任何机器上运行，运行时不需要回连到仓库。
 
-Override the install location with `SOLOMAN_INSTALL_DIR=/path ./install.sh` (useful for shared team installs or isolated test installs). Re-run `./install.sh` any time you change `skill/SKILL.md`, a role, a protocol, a template, or the shipped `knowledge/` — it idempotently replaces the prior install.
+使用 `SOLOMAN_INSTALL_DIR=/path ./install.sh` 覆盖安装位置（适用于团队共享安装或隔离测试安装）。每当你修改 `skill/SKILL.md`、某个角色、某个协议、某个模板或随附的 `knowledge/` 时，重新运行 `./install.sh`——它会幂等地替换之前的安装。
 
-> **Note**: `install.sh` uses `cp` rather than `ln -s` because Claude Code filters out skills whose symlink resolves into the active workspace.
+> **注意**：`install.sh` 使用 `cp` 而非 `ln -s`，因为 Claude Code 会过滤掉符号链接解析到活动工作区内的技能。
 
-### Use in Any Project
+### 在任何项目中使用
 
 ```bash
 cd ~/work/my-project
 claude
-# In the Claude session:
+# 在 Claude 会话中：
 # /soloman
 ```
 
-The session transforms into the Interfacer. It will:
-1. Offer to scaffold `.soloman/` if the project hasn't been initialized
-2. Present current state and ask what you'd like to work on
+会话将转变为总控。它将：
+1. 如果项目尚未初始化，主动提供搭建 `.soloman/`
+2. 呈现当前状态并询问你想处理什么
 
-### Use for Self-Evolution
+### 用于自我进化
 
 ```bash
 cd ~/work/soloman
@@ -50,70 +50,70 @@ claude
 # /soloman
 ```
 
-The session detects `SOLOMAN.md` in cwd and enters **self-mode**. Behavior is identical to a normal project except: the Forge is allowed to write universal role edits back to the source repo (`$SOLOMAN_REPO/roles/`). Session state still lives in a gitignored `.soloman/` under the repo, so commits stay clean.
+会话检测到当前工作目录中存在 `SOLOMAN.md` 并进入**自身模式**。行为与普通项目相同，区别在于：铁匠 被允许将通用角色编辑写回源代码仓库（`$SOLOMAN_REPO/roles/`）。会话状态仍然存在于仓库中被 `.gitignore` 忽略的 `.soloman/` 中，因此提交保持干净。
 
-After universal role edits land in the repo, re-run `./install.sh` so other installs pick them up.
+通用角色编辑落地到仓库后，重新运行 `./install.sh` 以便其他安装能够获取更新。
 
-## Built-in Roles
+## 内置角色
 
-| Role | Type | Job |
+| 角色 | 类型 | 职责 |
 |---|---|---|
-| **Interfacer** | Main session | Human interface, prompt enrichment, orchestration, state management |
-| **Planner** | Subagent | Produces thorough execution plans |
-| **Builder** | Subagent | Executes plans — writes code, creates content |
-| **Auditor** | Subagent | Independent review (optional, enabled by default) |
-| **Archivist** | Subagent | Project knowledge curator — knows where every file is |
-| **Forge** | Subagent | Creates/edits/deletes roles — the self-bootstrapping engine |
-| **Quartermaster** | Subagent | AI/hardware resource management |
+| **总控** | 主会话 | 人机接口、提示丰富化、编排、状态管理 |
+| **规划器** | 子代理 | 生成详尽的执行计划 |
+| **构建器** | 子代理 | 执行计划——编写代码、创建内容 |
+| **审计器** | 子代理 | 独立审查（可选，默认启用） |
+| **档案员** | 子代理 | 项目知识管理员——知道每个文件的位置 |
+| **铁匠** | 子代理 | 创建/编辑/删除角色——自举引擎 |
+| **军需官** | 子代理 | AI/硬件资源管理 |
 
-## Standard Flow
+## 标准流程
 
-1. User gives a request (can be messy)
-2. **Interfacer** enriches the prompt, asks clarifying questions if needed
-3. **Archivist** (if needed) provides relevant file paths
-4. **Planner** produces an execution plan
-5. **Auditor** (if enabled) reviews the plan
-6. User approves the plan
-7. **Builder** executes the plan
-8. **Auditor** (if enabled) reviews deliverables
-9. **Interfacer** presents results, saves state
+1. 用户提出请求（可能不够清晰）
+2. **总控**丰富化提示，必要时提出澄清问题
+3. **档案员**（如果需要）提供相关文件路径
+4. **规划器**生成执行计划
+5. **审计器**（如果启用）审查计划
+6. 用户批准计划
+7. **构建器**执行计划
+8. **审计器**（如果启用）审查交付物
+9. **总控**呈现结果，保存状态
 
-## Key Design Principles
+## 关键设计原则
 
-- **Only the Interfacer talks to the user.** All other roles are subagents.
-- **Only the Interfacer dispatches subagents.** No nested subagent calls.
-- **Archivist-as-a-service.** Interfacer pre-fetches context from Archivist before dispatching other roles.
-- **State saved every prompt.** Lightweight state by Interfacer; heavyweight state by Archivist at milestones.
-- **Forge is CORE.** Can create/edit/delete roles. Can edit itself, cannot delete itself.
-- **Auditor is optional.** Enabled by default, user can disable to save tokens.
+- **只有总控与用户对话。** 所有其他角色都是子代理。
+- **只有总控调度子代理。** 无嵌套子代理调用。
+- **档案员即服务。** 总控在调度其他角色之前预先从档案员获取上下文。
+- **每次提示都保存状态。** 总控负责轻量级状态；档案员在里程碑处负责重量级状态。
+- **铁匠 是核心。** 可以创建/编辑/删除角色。可以编辑自身，不能删除自身。
+- **审计器是可选的。** 默认启用，用户可以禁用以节省令牌。
 
-## File Structure
+## 文件结构
 
 ```
-soloman/               # Soloman source repo
-├── SOLOMAN.md              # This file (also self-mode marker)
-├── skill/SKILL.md           # Claude Code skill definition
-├── roles/                   # Universal role definitions
-├── protocols/               # Interaction protocols
-├── templates/               # Project scaffolding
-├── knowledge/               # Shipped reference (index, invariants, conventions)
+soloman/               # Soloman 源代码仓库
+├── SOLOMAN.md              # 本文件（同时也是自身模式标记）
+├── skill/SKILL.md           # Claude Code 技能定义
+├── roles/                   # 通用角色定义
+├── protocols/               # 交互协议
+├── templates/               # 项目脚手架
+├── knowledge/               # 随附参考（索引、不变式、约定）
 ├── install.sh / uninstall.sh
-└── changelog.md             # Evolution log
+└── changelog.md             # 进化日志
 
-~/.claude/skills/soloman/   # Installed skill bundle (read-only at runtime)
+~/.claude/skills/soloman/   # 已安装的技能包（运行时只读）
 ├── SKILL.md
 ├── roles/ protocols/ templates/ knowledge/
 └── VERSION
 
-any-project/.soloman/       # Per-project control plane (gitignored in the source repo)
-├── config.yaml              # Project settings
-├── state/                   # Session state (current.md, session-log.md, checkpoints/)
-├── workstreams/             # Active and completed workstreams
-├── roles/                   # Project-specific custom roles
-└── knowledge/               # Runtime project knowledge
+any-project/.soloman/       # 每个项目的控制平面（在源代码仓库中被 gitignore）
+├── config.yaml              # 项目设置
+├── state/                   # 会话状态（current.md、session-log.md、checkpoints/）
+├── workstreams/             # 活跃和已完成的工作流
+├── roles/                   # 项目特定的自定义角色
+└── knowledge/               # 运行时项目知识
 ```
 
-## Version
+## 版本
 
-- **Current**: v0.1.0 (Project renamed from the-paradigm to soloman)
-- **Status**: Renamed project from the-paradigm to soloman, updated all references and installation paths.
+- **当前版本**：v0.1.0（项目已从 the-paradigm 重命名为 soloman）
+- **状态**：已将项目从 the-paradigm 重命名为 soloman，更新了所有引用和安装路径。
