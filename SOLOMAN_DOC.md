@@ -46,9 +46,10 @@ Soloman 采用标准化的工作流程，确保项目从需求到交付的全过
 
 ### 5.1 从源代码安装
 
-Soloman 提供了简单的安装脚本，支持标准安装和自定义安装路径：
+Soloman 提供了多种安装方式，包括标准安装、自定义安装路径和远程一键安装：
 
 ```bash
+# 方法 1：从源代码安装
 # 克隆仓库
 cd ~/work
 git clone https://github.com/changyu87/soloman.git
@@ -59,6 +60,9 @@ cd soloman
 
 # 自定义安装路径
 SOLOMAN_INSTALL_DIR=/path/to/custom/location ./install.sh
+
+# 方法 2：远程一键安装（推荐）
+curl -fsSL https://raw.githubusercontent.com/changyu87/soloman/soloman/install.sh | bash
 ```
 
 ### 5.2 安装验证
