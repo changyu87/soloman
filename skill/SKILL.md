@@ -9,7 +9,7 @@ description: "Transform this session into a soloman-managed orchestrator with sp
 
 ## 常量
 
-将 `$SKILL_DIR` 绑定到包含此 SKILL.md 文件的目录。如果在 Claude Code 中运行，框架会预先添加一行 `Base directory for this skill: {path}` 可供使用。如果在 Trae 中运行，则使用包含此 SKILL.md 文件的目录。
+将 `$SKILL_DIR` 绑定到包含此 SKILL.md 文件的目录。
 
 - **SKILL_DIR**：（包含此 SKILL.md 文件的目录）
 - **ROLES_DIR**：`$SKILL_DIR/roles`
@@ -51,9 +51,8 @@ description: "Transform this session into a soloman-managed orchestrator with sp
 
 `writing-plans` 技能可增强规划器的结构化、细粒度任务分解能力。该技能为可选项。
 
-检查 writing-plans 技能是否存在于磁盘上。路径取决于运行环境：
-- 对于 Claude Code：`~/.claude/skills/writing-plans/SKILL.md`
-- 对于 Trae：`~/.trae-cn/skills/writing-plans/SKILL.md`
+检查 writing-plans 技能是否存在于磁盘上：
+- 路径：`~/.trae-cn/skills/writing-plans/SKILL.md`
 
 - **如果存在** → 继续执行第 4 步。无需发送消息。
 - **如果缺失** → 从 `$STATE_ROOT/config.yaml` 读取 `settings.writing_plans_prompted`。

@@ -23,18 +23,15 @@ Soloman 通过确保没有任何单个会话需要掌握全局来解决这个问
 ./install.sh
 ```
 
-这会组装一个自包含的技能包到 `~/.claude/skills/soloman/`（SKILL.md + `roles/` + `protocols/` + `templates/` + `knowledge/` + `VERSION` 标记）。该技能包独立于源代码仓库——它可以在任何机器上运行，运行时不需要回连到仓库。
+这会组装一个自包含的技能包到 `~/.trae-cn/skills/soloman/`（SKILL.md + `roles/` + `protocols/` + `templates/` + `knowledge/` + `VERSION` 标记）。该技能包独立于源代码仓库——它可以在任何机器上运行，运行时不需要回连到仓库。
 
 使用 `SOLOMAN_INSTALL_DIR=/path ./install.sh` 覆盖安装位置（适用于团队共享安装或隔离测试安装）。每当你修改 `skill/SKILL.md`、某个角色、某个协议、某个模板或随附的 `knowledge/` 时，重新运行 `./install.sh`——它会幂等地替换之前的安装。
-
-> **注意**：`install.sh` 使用 `cp` 而非 `ln -s`，因为 Claude Code 会过滤掉符号链接解析到活动工作区内的技能。
 
 ### 在任何项目中使用
 
 ```bash
 cd ~/work/my-project
-claude
-# 在 Claude 会话中：
+# 在 Trae 会话中：
 # /soloman
 ```
 
@@ -46,7 +43,7 @@ claude
 
 ```bash
 cd ~/work/soloman
-claude
+# 在 Trae 会话中：
 # /soloman
 ```
 
@@ -92,7 +89,7 @@ claude
 ```
 soloman/               # Soloman 源代码仓库
 ├── SOLOMAN.md              # 本文件（同时也是自身模式标记）
-├── skill/SKILL.md           # Claude Code 技能定义
+├── skill/SKILL.md           # Trae 技能定义
 ├── roles/                   # 通用角色定义
 ├── protocols/               # 交互协议
 ├── templates/               # 项目脚手架
@@ -100,7 +97,7 @@ soloman/               # Soloman 源代码仓库
 ├── install.sh / uninstall.sh
 └── changelog.md             # 进化日志
 
-~/.claude/skills/soloman/   # 已安装的技能包（运行时只读）
+~/.trae-cn/skills/soloman/   # 已安装的技能包（运行时只读）
 ├── SKILL.md
 ├── roles/ protocols/ templates/ knowledge/
 └── VERSION

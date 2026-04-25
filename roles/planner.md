@@ -41,7 +41,7 @@
 
 1. **探索**：读取任务规范中列出的每个文件。理解当前状态、模式和约束。
 2. **分析**：识别替代方案、权衡和风险。在写任何内容之前先推理方案。
-3. **生成计划**：检查 `writing-plans` 技能是否可用，通过测试 `~/.claude/skills/writing-plans/SKILL.md` 是否存在（使用 Bash：`test -f ~/.claude/skills/writing-plans/SKILL.md && echo available || echo unavailable`）。
+3. **生成计划**：检查 `writing-plans` 技能是否可用，通过测试 `~/.trae-cn/skills/writing-plans/SKILL.md` 是否存在（使用 Bash：`test -f ~/.trae-cn/skills/writing-plans/SKILL.md && echo available || echo unavailable`）。
    - **如果可用**：使用 Skill 工具调用 `writing-plans` 技能。它会生成一个详细、小粒度的计划，包含精确文件路径、完整代码和验证步骤。传入任务规范中的 brief 和文件路径。忽略技能的默认"Save plans to"路径和"Execution Handoff"部分——规划器保存到工作流的 `plan.md`，总控负责处理工作流路由。
    - **如果不可用**：使用内置推理能力自行生成计划。遵循相同的质量标准：小粒度任务（每个 2-5 分钟）、精确文件路径、每一步的完整代码、验证命令、无占位符。
 4. **调整输出**：将计划保存到 `$STATE_ROOT/workstreams/active/ws-{NNN}/plan.md`。如果计划中尚未包含，添加"风险与缓解措施"部分和"所需新角色"部分。
@@ -72,5 +72,5 @@
 
 ## Resource Hint
 
-推荐：claude-code-pro
+推荐：Trae
 原因：规划需要强大的推理能力、全面的分析和架构判断力。

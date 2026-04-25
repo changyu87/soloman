@@ -28,7 +28,7 @@
 - 每次用户提示增加约 500-2000 token（用户消息 + 总控响应）
 - 每次子代理调度增加约 500-1500 token（调度 + 返回消息）
 - 在 15 次提示 + 10 次调度时，大约消耗 20-40K token
-- Claude Code 会话通常支持 100-200K 上下文，但质量在达到硬限制之前就会下降
+- Trae 会话通常支持 100-200K 上下文，但质量在达到硬限制之前就会下降
 - 保守的阈值确保在质量下降之前进行交接
 
 ## 优雅交接协议
@@ -71,7 +71,7 @@ State saved. Here's where we are:
 - Completed: {what's done}
 - Next step: {what should happen when you resume}
 
-To continue: start a new Claude Code session and type /soloman
+To continue: start a new Trae session and type /soloman
 The new session will automatically detect the saved state and offer to resume.
 ```
 

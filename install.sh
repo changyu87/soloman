@@ -1,48 +1,23 @@
 #!/usr/bin/env bash
-# Install soloman as a self-contained skill bundle for both Claude Code and Trae.
+# Install soloman as a self-contained skill bundle for Trae.
 #
 # Usage:
-#   ./install.sh                              # install to ~/.claude/skills/soloman
-#   ./install.sh --trae                       # install to ~/.trae-cn/skills/soloman
+#   ./install.sh                              # install to ~/.trae-cn/skills/soloman
 #   SOLOMAN_INSTALL_DIR=/path ./install.sh   # install to a custom location
 
 set -euo pipefail
 
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VERSION="0.3.0"
-TRAE_MODE=false
 
-# Parse command line arguments
-while [[ $# -gt 0 ]]; do
-  case $1 in
-    --trae)
-      TRAE_MODE=true
-      shift
-      ;;
-    *)
-      shift
-      ;;
-  esac
-
-done
-
-# Set destination based on mode
-if [ "$TRAE_MODE" = true ]; then
-  DEST="${SOLOMAN_INSTALL_DIR:-$HOME/.trae-cn/skills/soloman}"
-  ENVIRONMENT="Trae"
-else
-  DEST="${SOLOMAN_INSTALL_DIR:-$HOME/.claude/skills/soloman}"
-  ENVIRONMENT="Claude Code"
-fi
+# Set destination
+DEST="${SOLOMAN_INSTALL_DIR:-$HOME/.trae-cn/skills/soloman}"
+ENVIRONMENT="Trae"
 
 # Attempt to install the writing-plans skill from its official GitHub source.
 # Requires git and network. Silent failure — never errors out or changes exit code.
 install_writing_plans() {
-  if [ "$TRAE_MODE" = true ]; then
-    local WP_DEST="$HOME/.trae-cn/skills/writing-plans"
-  else
-    local WP_DEST="$HOME/.claude/skills/writing-plans"
-  fi
+  local WP_DEST="$HOME/.trae-cn/skills/writing-plans"
   # Skip if already installed.
   if [ -d "$WP_DEST" ] && [ -f "$WP_DEST/SKILL.md" ]; then
     return 0

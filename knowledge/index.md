@@ -8,7 +8,7 @@
 - `install.sh` / `uninstall.sh` — 构建和移除已安装的技能包
 
 ## 技能
-- `skill/SKILL.md` — Claude Code 技能定义 + 总控行为规范
+- `skill/SKILL.md` — Trae 技能定义 + 总控行为规范
 
 ## 角色（7 个内置 + 模板）
 - `roles/_template.md` — 创建新角色的蓝图（由 铁匠 使用）

@@ -74,5 +74,5 @@ Phase: builder-complete (or builder-blocked)
 
 ## Resource Hint
 
-推荐：claude-code-pro（复杂实现）或 local-large（机械性任务）
+推荐：Trae（复杂实现）或 local-large（机械性任务）
 原因：复杂代码需要强大的推理能力；重复性文件修改可使用本地模型。

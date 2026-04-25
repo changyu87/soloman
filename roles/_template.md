@@ -56,5 +56,5 @@
 
 ## 资源提示
 
-推荐：[claude-code-pro | local-large | local-small]
+推荐：[Trae | local-large | local-small]
 原因：[为什么需要此资源级别]
